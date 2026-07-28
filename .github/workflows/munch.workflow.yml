@@ -13,12 +13,15 @@ jobs:
     container:
       image: nexgang/ubuntu:latest
 
-    steps:
-      - uses: actions/checkout@v3
-      - name: Fix Git ownership
-        run: git config --global --add safe.directory /__w/android_kernel_xiaomi_sm8250/android_kernel_xiaomi_sm8250
-      - name: Nexus Kernel Munch
-        run: bash build.sh null munch null
-        env:
-           token: ${{ secrets.TOKEN }}
-           chat_id: ${{ secrets.CHAT_ID }}
+   steps:
+    - name: Fix Git ownership before checkout   # <--- 第一步就执行
+      run: |
+        git config --global --add safe.directory /__w/android_kernel_xiaomi_sm8250/android_kernel_xiaomi_sm8250
+
+    - uses: actions/checkout@v3
+
+    - name: Nexus Kernel Munch
+      run: bash build.sh null munch null
+      env:
+        token: ${ secrets.TOKEN }
+        chat_id: ${ secrets.CHAT_ID }
